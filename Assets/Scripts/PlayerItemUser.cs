@@ -1,6 +1,8 @@
 using UnityEngine;
 
 public class PlayerItemUser : MonoBehaviour {
+    [field: SerializeField] public Transform FirePoint { get; private set; }
+
     private Inputs _inputs;
     private IWeapon _currentWeapon;
 

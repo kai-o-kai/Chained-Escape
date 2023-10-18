@@ -15,21 +15,25 @@ public abstract class Gun : IWeapon {
 }
 public class SemiAutomaticGun : Gun {
     private const float FIREINTERVALSECONDS = 0.3f;
+    private const float BULLETSPEED = 50f;
 
-    private bool _readyToFire = true;
+    private bool _readyToFire;
+    private Bullet _bulletPrefab;
 
     public SemiAutomaticGun(PlayerItemUser itemWielder) : base(itemWielder) {
-
+        _bulletPrefab = ReferenceManager.Instance.BulletPrefab;
+        _readyToFire = true;
     }
 
     public override void OnFireKeyEnd() {
-      throw new System.NotImplementedException("Fire Key Event Handlers are not implemented yet");
+        return;
     }
 
     public override void OnFireKeyStart() {
         if (!_readyToFire) { return; }
         _readyToFire = false;
         _player.StartCoroutine(ReReadyFire(new WaitForSeconds(FIREINTERVALSECONDS)));
+        Object.Instantiate(_bulletPrefab, _player.FirePoint.position, _player.FirePoint.rotation).Shoot(BULLETSPEED);
     }
     private IEnumerator ReReadyFire(WaitForSeconds wait) {
         yield return wait;
