@@ -1,0 +1,16 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cecc17435bc106f4389ee78a1024e486, type: 3}
+  m_Name: Reference Manager
+  m_EditorClassIdentifier: 
+  <ReloadManagerPrefab>k__BackingField: {fileID: 4746392022403933604, guid: c597433152eb28d4c963148209e960ce, type: 3}
+  <BulletPrefab>k__BackingField: {fileID: 0}
