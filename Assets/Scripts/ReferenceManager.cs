@@ -7,4 +7,5 @@ public class ReferenceManager : ScriptableObject {
 
     [field: SerializeField] public ReloadManager ReloadManagerPrefab { get; private set; }
     [field: SerializeField] public Bullet BulletPrefab { get; private set; }
+    [field: SerializeField] public GameObject BulletHitEntityParticle { get; private set; }
 }
