@@ -2,6 +2,8 @@ using UnityEngine;
 using System.Collections;
 
 public class GunnerEnemy : Enemy {
+    private const float TURNSPEED = 5f;
+
     private static readonly GunImplementations.IWeapon[] WEAPONS = new GunImplementations.IWeapon[] {
         new GunImplementations.AK47()
     };
@@ -18,12 +20,18 @@ public class GunnerEnemy : Enemy {
                 _weapon.OnStartFiring();
                 _firing = true;
             }
+            TurnToPlayer();
         } else {
             if (_firing) {
                 _weapon.OnStopFiring();
                 _firing = false;
             }
         }
+    }
+    private void TurnToPlayer() {
+        float angle = Utilities.GetAngleToPoint(Player.position, transform.position);
+        Quaternion targetRot = Quaternion.Euler(0f, 0f, angle);
+        transform.rotation = Quaternion.Lerp(transform.rotation, targetRot, Time.deltaTime * TURNSPEED);
     }
 
 

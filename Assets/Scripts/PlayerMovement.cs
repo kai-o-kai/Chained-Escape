@@ -18,6 +18,7 @@ public class PlayerMovement : MonoBehaviour {
     private void Start() {
         _inputs.Player.StepLeft.performed += (_) => LeftStep(_rotateAmountOnStep);
         _inputs.Player.StepRight.performed += (_) => RightStep(_rotateAmountOnStep);
+        // TODO : Back step should allow the player to choose what foot to back step with.
         _inputs.Player.StepBack.performed += (_) => OnBackStep(-_rotateAmountOnStep);
     }
     private void OnEnable() {
