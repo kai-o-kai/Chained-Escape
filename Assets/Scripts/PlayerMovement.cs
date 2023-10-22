@@ -7,19 +7,17 @@ public class PlayerMovement : MonoBehaviour {
     [SerializeField] private Transform _stepPivotContainer;
     [Header("Values")]
     [SerializeField][Range(-180f, 180f)] private float _rotateAmountOnStep;
+    [SerializeField][Range(-180f, 180f)] private float _rotateAmountOnBackStep;
 
     private Inputs _inputs;
-    private Transform _currentPivot => _isPivotedToFoot ? transform.parent : null;
-    private bool _isPivotedToFoot => (transform.parent == _leftStep) || (transform.parent == _rightStep);
+    private bool _backStepPressed => _inputs.Player.StepBack.ReadValue<float>() == 1f;
 
     private void Awake() {
         _inputs = new Inputs();
     }
     private void Start() {
-        _inputs.Player.StepLeft.performed += (_) => LeftStep(_rotateAmountOnStep);
-        _inputs.Player.StepRight.performed += (_) => RightStep(_rotateAmountOnStep);
-        // TODO : Back step should allow the player to choose what foot to back step with.
-        _inputs.Player.StepBack.performed += (_) => OnBackStep(-_rotateAmountOnStep);
+        _inputs.Player.StepLeft.performed += (_) => OnLeftStepPress();
+        _inputs.Player.StepRight.performed += (_) => OnRightStepPress();
     }
     private void OnEnable() {
         _inputs.Enable();
@@ -39,20 +37,18 @@ public class PlayerMovement : MonoBehaviour {
         _rightStep.eulerAngles = new Vector3(0f, 0f, _rightStep.eulerAngles.z - rotDegrees);
         _leftStep.parent = _stepPivotContainer;
     }
-    private void OnBackStep(float rotDegrees) {
-        if (!_isPivotedToFoot) {
-            bool doLeftStep = Random.value > 0.5f;
-            if (doLeftStep) {
-                LeftStep(rotDegrees);
-            } else {
-                RightStep(rotDegrees);
-            }
-            return;
-        }
-        if (_currentPivot == _leftStep) {
-            RightStep(rotDegrees);
+    private void OnLeftStepPress() {
+        if (!_backStepPressed) {
+            LeftStep(_rotateAmountOnStep);
         } else {
-            LeftStep(rotDegrees);
+            LeftStep(-_rotateAmountOnBackStep);
+        }
+    }
+    private void OnRightStepPress() {
+        if (!_backStepPressed) {
+            RightStep(_rotateAmountOnStep);
+        } else {
+            RightStep(-_rotateAmountOnBackStep);
         }
     }
 }

@@ -2,16 +2,24 @@ using UnityEngine;
 using System.Collections;
 
 public class GunnerEnemy : Enemy {
+
+    private enum GUNNERENEMYWEAPON {
+        AK47 = 0
+    }
+
     private const float TURNSPEED = 5f;
 
     private static readonly GunImplementations.IWeapon[] WEAPONS = new GunImplementations.IWeapon[] {
         new GunImplementations.AK47()
     };
     private bool _firing;
-    private GunImplementations.IWeapon _weapon = WEAPONS[0];
+    [SerializeField] private GUNNERENEMYWEAPON _weaponIndex;
+    private GunImplementations.IWeapon _weapon;
+
 
     protected override void Start() {
         base.Start();
+        _weapon = WEAPONS[(int)_weaponIndex];
         _weapon.Initialize(this);
     }
     private void Update() {
