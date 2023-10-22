@@ -18,11 +18,21 @@ public abstract class Enemy : MonoBehaviour {
         Player = GameObject.FindGameObjectWithTag("Player").transform;
     }
     protected bool CanSeePlayer() {
-        RaycastHit2D hitData = Physics2D.Raycast(transform.position, Player.position);
+        RaycastHit2D hitData = Physics2D.LinecastAll(transform.position, Player.position)[1]; // 0 is self, so 1 should be player. Physics2D.queriesStartInColliders didnt work to fix this.
         if (hitData.collider is null) {
             Debug.LogError("Enemy CanSeePlayer call raycast returned with no results.", this);
             return false;
         }
         return hitData.transform == Player.transform;
+    }
+    private void OnDrawGizmos() {
+        if (!Application.isPlaying) return;
+
+        if (CanSeePlayer()) {
+            Gizmos.color = Color.green;
+        } else {
+            Gizmos.color = Color.red;
+        }
+        Gizmos.DrawLine(transform.position, Player.position);
     }
 }
