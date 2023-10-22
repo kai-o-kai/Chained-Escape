@@ -7,8 +7,8 @@ public class PlayerHealth : MonoBehaviour, IDamagable {
 
     public float Health { get; private set; } = 100f;
 
-    public void DamageByBullet(float damageAmount, Bullet bullet) {
-        Health -= damageAmount;
+    public void OnHitByBullet(Bullet bullet) {
+        Health -= bullet.Damage;
         PlayerHurt?.Invoke(this);
         if (Health <= 0f) {
             PlayerDie?.Invoke();
@@ -16,5 +16,5 @@ public class PlayerHealth : MonoBehaviour, IDamagable {
     }
 }
 public interface IDamagable {
-    public void DamageByBullet(float damageAmount, Bullet bullet);
+    public void OnHitByBullet(Bullet bullet);
 }

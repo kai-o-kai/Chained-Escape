@@ -41,14 +41,14 @@ public class PlayerMovement : MonoBehaviour {
         if (!_backStepPressed) {
             LeftStep(_rotateAmountOnStep);
         } else {
-            LeftStep(-_rotateAmountOnBackStep);
+            RightStep(-_rotateAmountOnBackStep);
         }
     }
     private void OnRightStepPress() {
         if (!_backStepPressed) {
             RightStep(_rotateAmountOnStep);
         } else {
-            RightStep(-_rotateAmountOnBackStep);
+            LeftStep(-_rotateAmountOnBackStep);
         }
     }
 }
