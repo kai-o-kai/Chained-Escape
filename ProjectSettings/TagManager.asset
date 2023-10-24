@@ -44,3 +44,6 @@ TagManager:
   - name: Entity
     uniqueID: 2594256037
     locked: 0
+  - name: Elevator
+    uniqueID: 560255157
+    locked: 0

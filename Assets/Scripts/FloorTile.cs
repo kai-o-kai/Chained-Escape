@@ -9,11 +9,12 @@ public class FloorTile : MonoBehaviour {
 
     private SpriteRenderer _renderer;
 
+    private void Awake() {
+        _renderer = GetComponent<SpriteRenderer>();
+    }
+
     private void Start() {
-        float r = Random.Range(_minColor.r, _maxColor.r);
-        float g = Random.Range(_minColor.g, _maxColor.g);
-        float b = Random.Range(_minColor.b, _maxColor.b);
-        Color c = new Color(r, g, b);
-        _renderer.color = c;
+        Color color = Color.Lerp(_minColor, _maxColor, Random.value);
+        _renderer.color = color;
     }
 }
