@@ -1,11 +1,12 @@
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour {
+    public bool Enabled { get; set; } = true;
+
 
     [Header("Step Pivots")]
     [SerializeField] private Transform _leftStep;
     [SerializeField] private Transform _rightStep;
-    [SerializeField] private Transform _stepPivotContainer;
     [Header("Values")]
     [SerializeField][Range(-180f, 180f)] private float _rotateAmountOnStep;
     [SerializeField][Range(-180f, 180f)] private float _rotateAmountOnBackStep;
@@ -22,8 +23,7 @@ public class PlayerMovement : MonoBehaviour {
         _inputs.Player.StepLeft.performed += (_) => OnLeftStepPress();
         _inputs.Player.StepRight.performed += (_) => OnRightStepPress();
 
-        _checkShadow.transform.position = transform.position;
-        _checkShadow.transform.rotation = transform.rotation;
+        EventSystem.Instance.PlayerEnteredLevelEndElevator += () => Enabled = false;
     }
     private void OnEnable() {
         _inputs.Enable();
@@ -33,31 +33,27 @@ public class PlayerMovement : MonoBehaviour {
     }
     private void LeftStep(float rotDegrees) {
         _checkShadow.LeftStep(rotDegrees);
-        Debug.Log(_checkShadow.CurrentPositionValid);
+        Physics2D.SyncTransforms();
         if (_checkShadow.CurrentPositionValid) {
-            transform.parent = _leftStep;
-            _rightStep.parent = transform;
-            _leftStep.eulerAngles = new Vector3(0f, 0f, _leftStep.eulerAngles.z + rotDegrees);
-            _rightStep.parent = _stepPivotContainer;
+            transform.RotateAround(_leftStep.position, Vector3.forward, rotDegrees);
+            Physics2D.SyncTransforms();
         }
-
-        // _checkShadow.transform.position = transform.position;
-        // _checkShadow.transform.rotation = transform.rotation;
+        _checkShadow.ResetPosAndRot(transform, _leftStep, _rightStep);
+        Physics2D.SyncTransforms();
     }
     private void RightStep(float rotDegrees) {
         _checkShadow.RightStep(rotDegrees);
-        Debug.Log(_checkShadow.CurrentPositionValid);
+        Physics2D.SyncTransforms();
         if (_checkShadow.CurrentPositionValid) {
-            transform.parent = _rightStep;
-            _leftStep.parent = transform;
-            _rightStep.eulerAngles = new Vector3(0f, 0f, _rightStep.eulerAngles.z - rotDegrees);
-            _leftStep.parent = _stepPivotContainer;
+            transform.RotateAround(_rightStep.position, Vector3.forward, -rotDegrees);
+            Physics2D.SyncTransforms();
         }
-
-        // _checkShadow.transform.position = transform.position;
-        // _checkShadow.transform.rotation = transform.rotation;
+        _checkShadow.ResetPosAndRot(transform, _leftStep, _rightStep);
+        Physics2D.SyncTransforms();
     }
     private void OnLeftStepPress() {
+        if (!Enabled) { return; }
+
         if (!_backStepPressed) {
             LeftStep(_rotateAmountOnStep);
         } else {
@@ -65,6 +61,8 @@ public class PlayerMovement : MonoBehaviour {
         }
     }
     private void OnRightStepPress() {
+        if (!Enabled) { return; }
+
         if (!_backStepPressed) {
             RightStep(_rotateAmountOnStep);
         } else {

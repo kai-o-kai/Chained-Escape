@@ -2,9 +2,8 @@ using UnityEngine;
 
 [RequireComponent(typeof(Collider2D))]
 public class PlayerMovementCheckShadow : MonoBehaviour {
-    private int WALLLAYER;
-    
-    public bool CurrentPositionValid => _collider.IsTouchingLayers(WALLLAYER);
+    private LayerMask WALLLAYER;
+    public bool CurrentPositionValid => CurrentPositionValidFunc();
 
     [Header("Step Pivots")]
     [SerializeField] private Transform _leftStep;
@@ -12,32 +11,44 @@ public class PlayerMovementCheckShadow : MonoBehaviour {
     [SerializeField] private Transform _stepPivotContainer;
 
     private Collider2D _collider;
+    private ContactFilter2D _filter = new ContactFilter2D();
 
     private void Awake() {
         _collider = GetComponent<Collider2D>();
         _collider.isTrigger = true;
-        WALLLAYER = LayerMask.NameToLayer("Walls");
+        WALLLAYER = LayerMask.GetMask("Walls");
+        _filter.SetLayerMask(WALLLAYER);
+    }
+
+    private bool CurrentPositionValidFunc() {
+        Collider2D[] results = new Collider2D[10];
+        ContactFilter2D filter = new();
+        filter.SetLayerMask(WALLLAYER);
+        filter.useLayerMask = true;
+        _collider.OverlapCollider(filter, results);
+
+        return results[0] == null;
     }
     public void LeftStep(float rotDegrees) {
-        transform.parent = _leftStep;
-        _rightStep.parent = transform;
-        _leftStep.eulerAngles = new Vector3(0f, 0f, _leftStep.eulerAngles.z + rotDegrees);
-        _rightStep.parent = _stepPivotContainer;
+        transform.RotateAround(_leftStep.position, Vector3.forward, rotDegrees);
     }
     public void RightStep(float rotDegrees) {
-        transform.SetParent(_rightStep);
-        _leftStep.SetParent(transform);
-        _rightStep.eulerAngles = new Vector3(0f, 0f, _rightStep.eulerAngles.z - rotDegrees);
-        _leftStep.parent = _stepPivotContainer;
+        transform.RotateAround(_rightStep.position, Vector3.forward, -rotDegrees);
     }
     private void OnTriggerEnter2D(Collider2D other) {
         if (other.gameObject.layer == WALLLAYER) {
-            Debug.Log("entered wall");
         }
     }
     private void OnTriggerExit2D(Collider2D other) {
         if (other.gameObject.layer == WALLLAYER) {
-            Debug.Log("exited wall");
         }
+    }
+    public void ResetPosAndRot(Transform player, Transform left, Transform right) {
+        _leftStep.position = left.position;
+        _leftStep.rotation = left.rotation;
+        _rightStep.position = right.position;
+        _rightStep.rotation = right.rotation;
+        transform.position = player.position;
+        transform.rotation = player.rotation;
     }
 }
