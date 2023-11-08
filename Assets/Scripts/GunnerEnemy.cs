@@ -38,7 +38,7 @@ public class GunnerEnemy : Enemy {
     }
     private void TurnToPlayer() {
         float angle = Utilities.GetAngleToPoint(Player.position, transform.position);
-        Quaternion targetRot = Quaternion.Euler(0f, 0f, angle);
+        Quaternion targetRot = Quaternion.Euler(0f, 0f, angle + 90f);
         transform.rotation = Quaternion.Lerp(transform.rotation, targetRot, Time.deltaTime * TURNSPEED);
     }
 
@@ -53,16 +53,23 @@ public class GunnerEnemy : Enemy {
             private const int AMMOPERMAG = 30;
             private const float FIREINTERVAL = 0.5f;
             private const float RELOADTIME = 3f;
+            private const float BULLETSPEED = 50f;
+            private const float BULLETDAMAGE = 20f;
+            private static int BULLETLAYER;
 
             private int _currentAmmo;
             private GunnerEnemy _data;
             private Coroutine _currentTask;
             private WaitForSeconds _fireIntervalWait;
+            private Bullet _bulletPrefab;
 
             public void Initialize(GunnerEnemy data) {
                 _currentAmmo = AMMOPERMAG;
                 _data = data;
                 _fireIntervalWait = new WaitForSeconds(FIREINTERVAL);
+                _bulletPrefab = ReferenceManager.Instance.BulletPrefab;
+                BULLETLAYER = LayerMask.NameToLayer("EnemyBullet");
+                
             }
             public void OnStartFiring() {
                 _currentTask = _data.StartCoroutine(FireTask());
@@ -86,7 +93,7 @@ public class GunnerEnemy : Enemy {
             }
             private void Fire() {
                 _currentAmmo--;
-                Debug.Log("shooty shoot");
+                Instantiate(_bulletPrefab, _data.transform.position, _data.transform.rotation).Shoot(BULLETSPEED, BULLETLAYER, BULLETDAMAGE);
             }
         }
     }

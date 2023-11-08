@@ -18,7 +18,7 @@ public class SemiAutomaticGun : Gun
     private const float FIREINTERVALSECONDS = 0.3f;
     private const float BULLETSPEED = 50f;
     private const float BULLETDAMAGE = 20f;
-    private const int BULLETLAYER = 1 >> 6;
+    private static int BULLETLAYER;
     private const int AMMOPERMAG = 15;
 
     private bool _readyToFire;
@@ -29,6 +29,7 @@ public class SemiAutomaticGun : Gun
         _bulletPrefab = ReferenceManager.Instance.BulletPrefab;
         _readyToFire = true;
         _currentAmmo = AMMOPERMAG;
+        BULLETLAYER = LayerMask.NameToLayer("PlayerBullet");
     }
 
     public override void OnFireKeyEnd() {

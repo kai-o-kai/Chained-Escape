@@ -8,6 +8,8 @@ public abstract class Enemy : MonoBehaviour {
     protected Vector2 Destination { get => _path.destination; set => _path.destination = value; }
     protected bool destinationReached => _path.reachedDestination;
 
+    [SerializeField]
+    private LayerMask _sightToPlayerMask;
     private AIPath _path;
 
     protected virtual void Awake() {
@@ -18,7 +20,7 @@ public abstract class Enemy : MonoBehaviour {
         Player = GameObject.FindGameObjectWithTag("Player").transform;
     }
     protected bool CanSeePlayer() {
-        RaycastHit2D[] hits = Physics2D.LinecastAll(transform.position, Player.position);
+        RaycastHit2D[] hits = Physics2D.LinecastAll(transform.position, Player.position, _sightToPlayerMask);
         if (hits.Length == 1) { 
             return false; 
         }
