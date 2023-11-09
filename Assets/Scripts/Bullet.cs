@@ -15,6 +15,8 @@ public class Bullet : MonoBehaviour {
         Damage = damage;
     }
     private void OnTriggerEnter2D(Collider2D other) {
+        if (other.CompareTag("Tool Collider")) { return; }
+        
         if (other.TryGetComponent<IDamagable>(out var damagable)) {
             damagable.OnHitByBullet(this);
         } else {

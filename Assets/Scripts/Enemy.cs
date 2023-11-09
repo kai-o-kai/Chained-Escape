@@ -6,7 +6,9 @@ public abstract class Enemy : MonoBehaviour {
     protected Transform Player { get; private set; }
     protected float Speed { get => _path.maxSpeed; set => _path.maxSpeed = value; }
     protected Vector2 Destination { get => _path.destination; set => _path.destination = value; }
-    protected bool destinationReached => _path.reachedDestination;
+    protected Vector2 RememberedPlayerPosition { get; private set; }
+    protected bool DestinationReached => _path.reachedDestination;
+    protected bool EnemyIsEnabled = true;
 
     [SerializeField]
     private LayerMask _sightToPlayerMask;
@@ -18,8 +20,26 @@ public abstract class Enemy : MonoBehaviour {
 
     protected virtual void Start() {
         Player = GameObject.FindGameObjectWithTag("Player").transform;
+        PlayerHealth.PlayerDie += OnPlayerDie;
+    }
+    protected virtual void Update() {
+        SetRememberedPlayerPos();
+
+        void SetRememberedPlayerPos() {
+            if (!EnemyIsEnabled) { 
+                RememberedPlayerPosition = transform.position;    
+                return; 
+            }
+
+            if (CanSeePlayer())
+            {
+                RememberedPlayerPosition = Player.position;
+            }
+        }
     }
     protected bool CanSeePlayer() {
+        if (!EnemyIsEnabled)  { return false; }
+
         RaycastHit2D[] hits = Physics2D.LinecastAll(transform.position, Player.position, _sightToPlayerMask);
         if (hits.Length == 1) { 
             return false; 
@@ -33,7 +53,8 @@ public abstract class Enemy : MonoBehaviour {
         return hitData.transform == Player.transform;
     }
     private void OnDrawGizmos() {
-        if (!Application.isPlaying) return;
+        if (!Application.isPlaying) { return; }
+        if (!EnemyIsEnabled) { return; }
 
         if (CanSeePlayer()) {
             Gizmos.color = Color.green;
@@ -41,5 +62,9 @@ public abstract class Enemy : MonoBehaviour {
             Gizmos.color = Color.red;
         }
         Gizmos.DrawLine(transform.position, Player.position);
+    }
+    private void OnPlayerDie() => EnemyIsEnabled = false;
+    private void OnDestroy() {
+        PlayerHealth.PlayerDie -= OnPlayerDie;
     }
 }

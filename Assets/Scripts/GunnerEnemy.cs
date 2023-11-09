@@ -22,7 +22,8 @@ public class GunnerEnemy : Enemy {
         _weapon = WEAPONS[(int)_weaponIndex];
         _weapon.Initialize(this);
     }
-    private void Update() {
+    protected override void Update() {
+        base.Update();
         if (CanSeePlayer()) {
             if (!_firing) {
                 _weapon.OnStartFiring();
@@ -34,6 +35,7 @@ public class GunnerEnemy : Enemy {
                 _weapon.OnStopFiring();
                 _firing = false;
             }
+            Destination = RememberedPlayerPosition;
         }
     }
     private void TurnToPlayer() {
