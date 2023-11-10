@@ -17,4 +17,7 @@ public class EnemyHealth : MonoBehaviour, IDamagable {
             Destroy(gameObject);
         }
     }
+    public void OnHitByBaton(Baton baton) {
+        return;
+    }
 }

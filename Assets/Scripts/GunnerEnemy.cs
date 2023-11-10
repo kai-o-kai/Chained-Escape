@@ -29,7 +29,7 @@ public class GunnerEnemy : Enemy {
                 _weapon.OnStartFiring();
                 _firing = true;
             }
-            TurnToPlayer();
+            TurnToPlayer(TURNSPEED);
         } else {
             if (_firing) {
                 _weapon.OnStopFiring();
@@ -38,13 +38,6 @@ public class GunnerEnemy : Enemy {
             Destination = RememberedPlayerPosition;
         }
     }
-    private void TurnToPlayer() {
-        float angle = Utilities.GetAngleToPoint(Player.position, transform.position);
-        Quaternion targetRot = Quaternion.Euler(0f, 0f, angle + 90f);
-        transform.rotation = Quaternion.Lerp(transform.rotation, targetRot, Time.deltaTime * TURNSPEED);
-    }
-
-
     private class GunImplementations {
         public interface IWeapon {
             void Initialize(GunnerEnemy data);

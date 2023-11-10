@@ -20,7 +20,11 @@ public class PlayerHealth : MonoBehaviour, IDamagable {
             Destroy(gameObject);
         }
     }
+    public void OnHitByBaton(Baton baton) {
+        return;
+    }
 }
 public interface IDamagable {
     public void OnHitByBullet(Bullet bullet);
+    public void OnHitByBaton(Baton baton);
 }

@@ -32,7 +32,7 @@ public class CameraManager : MonoBehaviour {
         MoveCameraAlongWaypoints();
 
         void MoveCameraAlongWaypoints() {
-            if (!_cameraMovementEnabled) { return; }
+            if (!_cameraMovementEnabled || _waypoints.Length == 0) { return; }
 
             transform.position = Vector2.MoveTowards(transform.position, _currentWaypoint.transform.position, Time.deltaTime * _speed);
             if (Vector2.Distance(transform.position, _currentWaypoint.transform.position) < WAYPOINTREACHEDDISTANCE) {

@@ -7,6 +7,10 @@ public class Button : MonoBehaviour, IDamagable {
     private Animator _anim;
     private GameObject _hitByBulletFx;
 
+    public void OnHitByBaton(Baton baton) {
+        return;
+    }
+
     public void OnHitByBullet(Bullet bullet) {
         _anim.Play(PRESSANIMATIONNAME);
         _hitByBulletFx = _hitByBulletFx ?? ReferenceManager.Instance.BulletHitEntityParticle;
