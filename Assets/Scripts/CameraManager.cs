@@ -26,7 +26,6 @@ public class CameraManager : MonoBehaviour {
     private void Awake() {
         _animator = GetComponent<Animator>();
         Instance = this;
-        DontDestroyOnLoad(gameObject);
     }
     private void Update() {
         MoveCameraAlongWaypoints();
@@ -47,6 +46,9 @@ public class CameraManager : MonoBehaviour {
             }
         }
     }
+    private void OnDestroy() {
+        Instance = null;
+    }
     public void PlayExitSceneTransition() {
         _animator.Play(EXITSCENEANIMATIONNAME);
     }
@@ -55,6 +57,21 @@ public class CameraManager : MonoBehaviour {
     }
     public void ShakeCamera() {
         _animator.Play(SHAKEANIMATIONNAME);
+    }
+    public float GetFadeAnimationSeconds() {
+        AnimationClip[] clips = _animator.runtimeAnimatorController.animationClips;
+        AnimationClip clipToCheckLength = null;
+        foreach (var cl in clips) {
+            if (cl.name == EXITSCENEANIMATIONNAME || cl.name == ENTERSCENEANIMATIONNAME) {
+                clipToCheckLength = cl;
+                break;
+            } 
+        }
+        if (clipToCheckLength is null) {
+            Debug.LogError("Couldn't find a fade transition animation for scene transition.");
+            return 0f;
+        }
+        return clipToCheckLength.length;
     }
 
     #if UNITY_EDITOR
