@@ -38,9 +38,14 @@ public abstract class Enemy : MonoBehaviour {
         }
     }
     protected void TurnToPlayer(float turnSpeed) {
-        float angle = Utilities.GetAngleToPoint(Player.position, transform.position);
-        Quaternion targetRot = Quaternion.Euler(0f, 0f, angle + 90f);
+        Quaternion targetRot = Quaternion.Euler(0f, 0f, GetAngleToPlayer());
         transform.rotation = Quaternion.Lerp(transform.rotation, targetRot, Time.deltaTime * turnSpeed);
+    }
+    private float GetAngleToPlayer() => Utilities.GetAngleToPoint(Player.position, transform.position) + 90f;
+    protected bool TurnedToPlayer() {
+        float targetAngle = GetAngleToPlayer();
+        float difference = Mathf.Abs(targetAngle - transform.eulerAngles.z);
+        return difference < 1f;
     }
     protected bool CanSeePlayer() {
         if (!EnemyIsEnabled)  { return false; }

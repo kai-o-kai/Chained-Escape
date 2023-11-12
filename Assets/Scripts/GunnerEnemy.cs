@@ -25,7 +25,7 @@ public class GunnerEnemy : Enemy {
     protected override void Update() {
         base.Update();
         if (CanSeePlayer()) {
-            if (!_firing) {
+            if (!_firing && TurnedToPlayer()) {
                 _weapon.OnStartFiring();
                 _firing = true;
             }
@@ -46,7 +46,7 @@ public class GunnerEnemy : Enemy {
         }
         public class AK47 : IWeapon {
             private const int AMMOPERMAG = 30;
-            private const float FIREINTERVAL = 0.5f;
+            private const float FIREINTERVAL = 0.75f;
             private const float RELOADTIME = 3f;
             private const float BULLETSPEED = 50f;
             private const float BULLETDAMAGE = 20f;
