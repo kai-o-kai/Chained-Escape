@@ -21,5 +21,6 @@ public class LevelEndElevator : MonoBehaviour {
 
         _doorAnimator.Play(CLOSEANIMATIONNAME);
         EventSystem.Instance.OnPlayerEnterLevelEndElevator();
+        LevelTransitionManager.Instance.TransitionToScene(LevelTransitionManager.Instance.NextSceneIndex, false);
     }
 }

@@ -15,3 +15,4 @@ MonoBehaviour:
   <ReloadManagerPrefab>k__BackingField: {fileID: 4746392022403933604, guid: c597433152eb28d4c963148209e960ce, type: 3}
   <BulletPrefab>k__BackingField: {fileID: 7290935365674292271, guid: a181014fa40967d44bb159510410b9bb, type: 3}
   <BulletHitEntityParticle>k__BackingField: {fileID: 5229900819472331143, guid: c86c34b909feca54f81b2d3f59977453, type: 3}
+  <LevelTransitionManagerPrefab>k__BackingField: {fileID: 6492517017748766244, guid: 5cf04772dd0a7e94b9c9560ba7c58ded, type: 3}

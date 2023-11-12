@@ -6,8 +6,6 @@ public class CameraManager : MonoBehaviour {
     public static CameraManager Instance { get; private set; }
 
     private const string SHAKEANIMATIONNAME = "shake";
-    private const string EXITSCENEANIMATIONNAME = "circleTransitionExitScene";
-    private const string ENTERSCENEANIMATIONNAME = "circleTransitionEnterScene";
 
     private const float WAYPOINTREACHEDDISTANCE = 0.05f;
 
@@ -49,40 +47,10 @@ public class CameraManager : MonoBehaviour {
     private void OnDestroy() {
         Instance = null;
     }
-    public void PlayExitSceneTransition() {
-        _animator.Play(EXITSCENEANIMATIONNAME);
-    }
-    public void PlayEnterSceneTransition() {
-        _animator.Play(ENTERSCENEANIMATIONNAME);
-    }
     public void ShakeCamera() {
         _animator.Play(SHAKEANIMATIONNAME);
     }
-    public float GetFadeAnimationSeconds() {
-        AnimationClip[] clips = _animator.runtimeAnimatorController.animationClips;
-        AnimationClip clipToCheckLength = null;
-        foreach (var cl in clips) {
-            if (cl.name == EXITSCENEANIMATIONNAME || cl.name == ENTERSCENEANIMATIONNAME) {
-                clipToCheckLength = cl;
-                break;
-            } 
-        }
-        if (clipToCheckLength is null) {
-            Debug.LogError("Couldn't find a fade transition animation for scene transition.");
-            return 0f;
-        }
-        return clipToCheckLength.length;
-    }
-
     #if UNITY_EDITOR
-    [MenuItem("Debug/Play Exit Scene Transition")]
-    public static void DebugPlayExitSceneTransition() {
-        Instance.PlayExitSceneTransition();
-    }
-    [MenuItem("Debug/Play Enter Scene Transition")]
-    public static void DebugPlayEnterSceneTransition() {
-        Instance.PlayEnterSceneTransition();
-    }
     [MenuItem("Debug/Shake Camera")]
     public static void DebugShakeCamera() {
         Instance.ShakeCamera();

@@ -1,12 +1,17 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 public class LevelTransitionManager : MonoBehaviour {
+    private const string ENTERSCENEANIM = "circleTransitionEnterScene";
+    private const string EXITSCENEANIM = "circleTransitionExitScene";
+
     public static LevelTransitionManager Instance { get {
         if (s_instance == null) {
-            GameObject o = new("Level Transition Manager");
-            s_instance = o.AddComponent<LevelTransitionManager>();
+            s_instance = Instantiate(ReferenceManager.Instance.LevelTransitionManagerPrefab);
         }
         return s_instance;
     } }
@@ -15,18 +20,19 @@ public class LevelTransitionManager : MonoBehaviour {
     public bool NextSceneExists => SceneManager.GetSceneByBuildIndex(NextSceneIndex) != null;
     public int NextSceneIndex => SceneManager.GetActiveScene().buildIndex + 1;
     
-    private float _fadeSeconds;
+    [SerializeField]
+    private float _fadeTimeSeconds;
+
+    private Animator _animator;
 
     private void Awake() {
         s_instance = this;
+        _animator = GetComponent<Animator>();
         DontDestroyOnLoad(this);
-    }
-    private void Start() {
-        _fadeSeconds = CameraManager.Instance.GetFadeAnimationSeconds();
     }
     public void TransitionToScene(int sceneIndex, bool bypassFade) {
         ValidateParameters();
-        if (!bypassFade) {
+        if (bypassFade) {
             SceneManager.LoadScene(sceneIndex);
             return;
         }
@@ -41,9 +47,20 @@ public class LevelTransitionManager : MonoBehaviour {
         }
     }
     private IEnumerator C_SceneTransitionWithFade(int index) {
-        CameraManager.Instance.PlayExitSceneTransition();
-        yield return new WaitForSeconds(_fadeSeconds);
-        SceneManager.LoadScene(index);
-        CameraManager.Instance.PlayEnterSceneTransition();
+        _animator.Play(EXITSCENEANIM);
+        yield return new WaitForSeconds(_fadeTimeSeconds);
+        SceneManager.LoadScene(NextSceneIndex);
+        yield return new WaitForSeconds(0.5f);
+        _animator.Play(ENTERSCENEANIM);
     }
+    #if UNITY_EDITOR
+    [MenuItem("Debug/Transition To Next Scene Fade")]
+    public static void DebugTransitionNextSceneFade() {
+        Instance.TransitionToScene(Instance.NextSceneIndex, false);
+    }
+    [MenuItem("Debug/Transition To Next Scene No Fade")]
+    public static void DebugTransitionNextSceneNoFade() {
+        Instance.TransitionToScene(Instance.NextSceneIndex, true);
+    }
+    #endif
 }
