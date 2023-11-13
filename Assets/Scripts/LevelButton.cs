@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Button : MonoBehaviour, IDamagable {
+public class LevelButton : MonoBehaviour, IDamagable {
     private const string PRESSANIMATIONNAME = "press";
 
     [SerializeField]
