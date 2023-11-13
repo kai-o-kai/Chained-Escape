@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class PlayerHealth : MonoBehaviour, IDamagable {
     public static event Action PlayerDie;
-    public static event Action<PlayerHealth> PlayerHurt;
+    public static event Action<PlayerHealth> PlayerHealthChanged;
 
     public float Health { get; private set; } = 100f;
 
@@ -11,7 +11,7 @@ public class PlayerHealth : MonoBehaviour, IDamagable {
 
     public void OnHitByBullet(Bullet bullet) {
         Health -= bullet.Damage;
-        PlayerHurt?.Invoke(this);
+        PlayerHealthChanged?.Invoke(this);
         _hitByBulletFx = _hitByBulletFx ?? ReferenceManager.Instance.BulletHitEntityParticle;
         Destroy(Instantiate(_hitByBulletFx, bullet.transform.position, bullet.transform.rotation), 2f);
         Destroy(bullet.gameObject);

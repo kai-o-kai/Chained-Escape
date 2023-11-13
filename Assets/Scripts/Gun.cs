@@ -42,7 +42,7 @@ public class SemiAutomaticGun : Gun
         _readyToFire = false;
         _player.StartCoroutine(ReReadyFire(new WaitForSeconds(FIREINTERVALSECONDS)));
         _currentAmmo--;
-        Object.Instantiate(_bulletPrefab, _player.FirePoint.position, _player.FirePoint.rotation).Shoot(BULLETSPEED, BULLETLAYER, BULLETDAMAGE);
+        Object.Instantiate(_bulletPrefab, _player.FirePoint.position, _player.FirePoint.rotation).Shoot(BULLETSPEED, BULLETLAYER, BULLETDAMAGE, 0f);
     }
     private IEnumerator ReReadyFire(WaitForSeconds wait) {
         yield return wait;

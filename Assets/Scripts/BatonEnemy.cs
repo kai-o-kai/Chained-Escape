@@ -14,7 +14,7 @@ public class BatonEnemy : Enemy {
     protected override void Update() {
         base.Update();
         if (CanSeePlayer()) {
-            TurnToPlayer(TURNSPEED);
+            TurnToPlayer(TURNSPEED, 0f);
             Destination = Player.position;
             if (Vector2.Distance(Player.position, transform.position) <= MINATTACKDISTANCE) {
                 if (_readyToAttack) {

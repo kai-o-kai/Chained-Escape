@@ -37,15 +37,16 @@ public abstract class Enemy : MonoBehaviour {
             }
         }
     }
-    protected void TurnToPlayer(float turnSpeed) {
-        Quaternion targetRot = Quaternion.Euler(0f, 0f, GetAngleToPlayer());
+    protected void TurnToPlayer(float turnSpeed, float innacuracy) {
+        float modifier = Random.Range(-innacuracy, innacuracy);
+        Quaternion targetRot = Quaternion.Euler(0f, 0f, GetAngleToPlayer() + modifier);
         transform.rotation = Quaternion.Lerp(transform.rotation, targetRot, Time.deltaTime * turnSpeed);
     }
     private float GetAngleToPlayer() => Utilities.GetAngleToPoint(Player.position, transform.position) + 90f;
     protected bool TurnedToPlayer() {
         float targetAngle = GetAngleToPlayer();
         float difference = Mathf.Abs(targetAngle - transform.eulerAngles.z);
-        return difference < 1f;
+        return difference < 5f;
     }
     protected bool CanSeePlayer() {
         if (!EnemyIsEnabled)  { return false; }

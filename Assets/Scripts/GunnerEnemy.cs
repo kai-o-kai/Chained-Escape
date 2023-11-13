@@ -4,13 +4,13 @@ using System.Collections;
 public class GunnerEnemy : Enemy {
 
     private enum GUNNERENEMYWEAPON {
-        AK47 = 0
+        Sig = 0
     }
 
     private const float TURNSPEED = 5f;
 
     private static readonly GunImplementations.IWeapon[] WEAPONS = new GunImplementations.IWeapon[] {
-        new GunImplementations.AK47()
+        new GunImplementations.Sig()
     };
     private bool _firing;
     [SerializeField] private GUNNERENEMYWEAPON _weaponIndex;
@@ -29,7 +29,7 @@ public class GunnerEnemy : Enemy {
                 _weapon.OnStartFiring();
                 _firing = true;
             }
-            TurnToPlayer(TURNSPEED);
+            TurnToPlayer(TURNSPEED, 0f);
         } else {
             if (_firing) {
                 _weapon.OnStopFiring();
@@ -44,12 +44,12 @@ public class GunnerEnemy : Enemy {
             void OnStartFiring();
             void OnStopFiring();
         }
-        public class AK47 : IWeapon {
+        public class Sig : IWeapon {
             private const string SHOOTSOUND = "ak47_shoot";
             private const string RELOADSOUND = "ak47_reload";
 
-            private const int AMMOPERMAG = 1;
-            private const float FIREINTERVAL = 0.75f;
+            private const int AMMOPERMAG = 12;
+            private const float FIREINTERVAL = 2f;
             private const float RELOADTIME = 5f;
             private const float BULLETSPEED = 50f;
             private const float BULLETDAMAGE = 20f;
@@ -95,7 +95,7 @@ public class GunnerEnemy : Enemy {
             }
             private void Fire() {
                 _currentAmmo--;
-                Instantiate(_bulletPrefab, _data.transform.position, _data.transform.rotation).Shoot(BULLETSPEED, BULLETLAYER, BULLETDAMAGE);
+                Instantiate(_bulletPrefab, _data.transform.position, _data.transform.rotation).Shoot(BULLETSPEED, BULLETLAYER, BULLETDAMAGE, 10f);
             }
         }
     }
