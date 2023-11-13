@@ -42,7 +42,6 @@ public class HealthVignetteVFXManager : MonoBehaviour {
         _vignette.intensity.Override(newValue);
         _vignette.color.Override(Color.red);
         float settledValue = Mathf.Lerp(MAXVIGNETTEINTENSITY, MINVIGNETTEINTENSITY, newPlayerHealth / _playerMaxHP);
-        Debug.Log($"Health Vignette Recalculating, jump value {newValue}, settled value {settledValue}");
         while (_vignette.intensity.value != settledValue) {
             _vignette.intensity.Override(Mathf.Lerp(_vignette.intensity.value, settledValue, Time.deltaTime * SETTLESPEED));
             yield return null;
