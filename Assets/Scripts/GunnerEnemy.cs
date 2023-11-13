@@ -45,9 +45,12 @@ public class GunnerEnemy : Enemy {
             void OnStopFiring();
         }
         public class AK47 : IWeapon {
-            private const int AMMOPERMAG = 30;
+            private const string SHOOTSOUND = "ak47_shoot";
+            private const string RELOADSOUND = "ak47_reload";
+
+            private const int AMMOPERMAG = 1;
             private const float FIREINTERVAL = 0.75f;
-            private const float RELOADTIME = 3f;
+            private const float RELOADTIME = 5f;
             private const float BULLETSPEED = 50f;
             private const float BULLETDAMAGE = 20f;
             private static int BULLETLAYER;
@@ -68,13 +71,16 @@ public class GunnerEnemy : Enemy {
             }
             public void OnStartFiring() {
                 _currentTask = _data.StartCoroutine(FireTask());
+                AudioManager.Instance.PlaySound("ak47_shoot");
             }
             public void OnStopFiring() {
+                AudioManager.Instance.StopSound("ak47_shoot");
                 _data.StopCoroutine(_currentTask);
             }
             private IEnumerator FireTask() {
                 while (true) {
                     if (_currentAmmo <= 0) {
+                        AudioManager.Instance.StopSound("ak47_shoot");
                         yield return Reload();        
                     }
                     Fire();
@@ -83,6 +89,7 @@ public class GunnerEnemy : Enemy {
                 
             }
             private IEnumerator Reload() {
+                AudioManager.Instance.PlayOneShot("ak47_reload");
                 yield return new WaitForSeconds(RELOADTIME);
                 _currentAmmo = AMMOPERMAG;
             }

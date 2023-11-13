@@ -1873,7 +1873,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d5bc203eacc8d54baafd52c8dcd0ef0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _sounds: []
+  _sounds:
+  - {fileID: 11400000, guid: ed58b63b0987e4243b1af63618886c7b, type: 2}
+  - {fileID: 11400000, guid: 83c728569a4662d4cafc5265c04c2778, type: 2}
   _sfxGroup: {fileID: 2159199816618067338, guid: 2e4f729996f29af42adb54dd2478e36e, type: 2}
   _musicGroup: {fileID: 2184916709172521089, guid: 2e4f729996f29af42adb54dd2478e36e, type: 2}
 --- !u!4 &1818653953
