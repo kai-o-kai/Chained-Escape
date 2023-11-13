@@ -20,6 +20,7 @@ public class SemiAutomaticGun : Gun
     private const float BULLETDAMAGE = 20f;
     private static int BULLETLAYER;
     private const int AMMOPERMAG = 15;
+    private const float RECOILDEGREES = 10f;
 
     private bool _readyToFire;
     private Bullet _bulletPrefab;
@@ -43,6 +44,9 @@ public class SemiAutomaticGun : Gun
         _player.StartCoroutine(ReReadyFire(new WaitForSeconds(FIREINTERVALSECONDS)));
         _currentAmmo--;
         Object.Instantiate(_bulletPrefab, _player.FirePoint.position, _player.FirePoint.rotation).Shoot(BULLETSPEED, BULLETLAYER, BULLETDAMAGE, 0f);
+        if (_player.TryGetComponent<PlayerMovement>(out var movement)) {
+            movement.LeftStep(-RECOILDEGREES);
+        }
     }
     private IEnumerator ReReadyFire(WaitForSeconds wait) {
         yield return wait;

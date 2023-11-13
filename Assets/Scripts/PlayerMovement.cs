@@ -31,7 +31,7 @@ public class PlayerMovement : MonoBehaviour {
     private void OnDisable() {
         _inputs.Disable();
     }
-    private void LeftStep(float rotDegrees) {
+    public void LeftStep(float rotDegrees) {
         _checkShadow.LeftStep(rotDegrees);
         Physics2D.SyncTransforms();
         if (_checkShadow.CurrentPositionValid) {
@@ -41,7 +41,7 @@ public class PlayerMovement : MonoBehaviour {
         _checkShadow.ResetPosAndRot(transform, _leftStep, _rightStep);
         Physics2D.SyncTransforms();
     }
-    private void RightStep(float rotDegrees) {
+    public void RightStep(float rotDegrees) {
         _checkShadow.RightStep(rotDegrees);
         Physics2D.SyncTransforms();
         if (_checkShadow.CurrentPositionValid) {
