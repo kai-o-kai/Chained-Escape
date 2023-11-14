@@ -15,4 +15,8 @@ MonoBehaviour:
   <ReloadManagerPrefab>k__BackingField: {fileID: 4746392022403933604, guid: c597433152eb28d4c963148209e960ce, type: 3}
   <BulletPrefab>k__BackingField: {fileID: 7290935365674292271, guid: a181014fa40967d44bb159510410b9bb, type: 3}
   <BulletHitEntityParticle>k__BackingField: {fileID: 5229900819472331143, guid: c86c34b909feca54f81b2d3f59977453, type: 3}
+  <AmmoCounterPrefab>k__BackingField: {fileID: 7156348313842877562, guid: e40742229f07cd14ca5745f5c521dd00, type: 3}
   <LevelTransitionManagerPrefab>k__BackingField: {fileID: 6492517017748766244, guid: 5cf04772dd0a7e94b9c9560ba7c58ded, type: 3}
+  <PistolShot>k__BackingField: {fileID: 8300000, guid: 2f5bebd914e283548b66e71927d21f9c, type: 3}
+  <PistolReload>k__BackingField: {fileID: 8300000, guid: 79ed0f8416aa4c3458ab1f4e34c3da7e, type: 3}
+  <PistolDryfire>k__BackingField: {fileID: 8300000, guid: 511cc94ee70b7c24a95e7f4ae9a261ff, type: 3}

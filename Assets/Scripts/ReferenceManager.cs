@@ -8,5 +8,9 @@ public class ReferenceManager : ScriptableObject {
     [field: SerializeField] public ReloadManager ReloadManagerPrefab { get; private set; }
     [field: SerializeField] public Bullet BulletPrefab { get; private set; }
     [field: SerializeField] public GameObject BulletHitEntityParticle { get; private set; }
+    [field: SerializeField] public AmmoCounter AmmoCounterPrefab { get; private set; }
     [field: SerializeField] public LevelTransitionManager LevelTransitionManagerPrefab { get; private set; }
+    [field: SerializeField] public AudioClip PistolShot { get; private set; }
+    [field: SerializeField] public AudioClip PistolReload { get; private set; }
+    [field: SerializeField] public AudioClip PistolDryfire { get; private set; }
 }
