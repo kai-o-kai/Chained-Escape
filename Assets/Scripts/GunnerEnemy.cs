@@ -1,7 +1,10 @@
 using UnityEngine;
 using System.Collections;
+using Pathfinding;
 
+[RequireComponent(typeof(AudioSource))]
 public class GunnerEnemy : Enemy {
+    public AudioSource Source { get; private set; }
 
     private enum GUNNERENEMYWEAPON {
         Sig = 0
@@ -16,6 +19,10 @@ public class GunnerEnemy : Enemy {
     [SerializeField] private GUNNERENEMYWEAPON _weaponIndex;
     private GunImplementations.IWeapon _weapon;
 
+    protected override void Awake() {
+        base.Awake();
+        Source = GetComponent<AudioSource>();
+    }
 
     protected override void Start() {
         base.Start();
@@ -45,10 +52,7 @@ public class GunnerEnemy : Enemy {
             void OnStopFiring();
         }
         public class Sig : IWeapon {
-            private const string SHOOTSOUND = "ak47_shoot";
-            private const string RELOADSOUND = "ak47_reload";
-
-            private const int AMMOPERMAG = 12;
+            private const int AMMOPERMAG = 5;
             private const float FIREINTERVAL = 2f;
             private const float RELOADTIME = 5f;
             private const float BULLETSPEED = 50f;
@@ -60,6 +64,8 @@ public class GunnerEnemy : Enemy {
             private Coroutine _currentTask;
             private WaitForSeconds _fireIntervalWait;
             private Bullet _bulletPrefab;
+            private AudioClip _shootSound;
+            private AudioClip _reloadSound;
 
             public void Initialize(GunnerEnemy data) {
                 _currentAmmo = AMMOPERMAG;
@@ -67,20 +73,18 @@ public class GunnerEnemy : Enemy {
                 _fireIntervalWait = new WaitForSeconds(FIREINTERVAL);
                 _bulletPrefab = ReferenceManager.Instance.BulletPrefab;
                 BULLETLAYER = LayerMask.NameToLayer("EnemyBullet");
-                
+                _shootSound = ReferenceManager.Instance.PistolShot;
+                _reloadSound = ReferenceManager.Instance.PistolReload;
             }
             public void OnStartFiring() {
                 _currentTask = _data.StartCoroutine(FireTask());
-                AudioManager.Instance.PlaySound("ak47_shoot");
             }
             public void OnStopFiring() {
-                AudioManager.Instance.StopSound("ak47_shoot");
                 _data.StopCoroutine(_currentTask);
             }
             private IEnumerator FireTask() {
                 while (true) {
                     if (_currentAmmo <= 0) {
-                        AudioManager.Instance.StopSound("ak47_shoot");
                         yield return Reload();        
                     }
                     Fire();
@@ -89,12 +93,13 @@ public class GunnerEnemy : Enemy {
                 
             }
             private IEnumerator Reload() {
-                AudioManager.Instance.PlayOneShot("ak47_reload");
+                _data.Source.PlayOneShot(_reloadSound);
                 yield return new WaitForSeconds(RELOADTIME);
                 _currentAmmo = AMMOPERMAG;
             }
             private void Fire() {
                 _currentAmmo--;
+                _data.Source.PlayOneShot(_shootSound);
                 Instantiate(_bulletPrefab, _data.transform.position, _data.transform.rotation).Shoot(BULLETSPEED, BULLETLAYER, BULLETDAMAGE, 10f);
             }
         }

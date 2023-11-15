@@ -48,6 +48,9 @@ TagManager:
   - name: Bullets
     uniqueID: 2405956863
     locked: 0
+  - name: Collectable
+    uniqueID: 730194183
+    locked: 0
   - name: Entity
     uniqueID: 2594256037
     locked: 0

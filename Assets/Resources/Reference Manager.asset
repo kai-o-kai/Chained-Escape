@@ -20,3 +20,6 @@ MonoBehaviour:
   <PistolShot>k__BackingField: {fileID: 8300000, guid: 2f5bebd914e283548b66e71927d21f9c, type: 3}
   <PistolReload>k__BackingField: {fileID: 8300000, guid: 79ed0f8416aa4c3458ab1f4e34c3da7e, type: 3}
   <PistolDryfire>k__BackingField: {fileID: 8300000, guid: 511cc94ee70b7c24a95e7f4ae9a261ff, type: 3}
+  <ChainRattle>k__BackingField: {fileID: 8300000, guid: c95bf0b388e81664787fe267a788e1a1, type: 3}
+  <BatonHit>k__BackingField: {fileID: 8300000, guid: ad39c6e3035215d49b0027b1fd600d67, type: 3}
+  <MedkitPickup>k__BackingField: {fileID: 8300000, guid: 115a27a6d2dec03498a6cfca54f7ce36, type: 3}

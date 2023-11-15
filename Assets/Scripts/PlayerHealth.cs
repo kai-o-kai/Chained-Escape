@@ -21,7 +21,11 @@ public class PlayerHealth : MonoBehaviour, IDamagable {
         }
     }
     public void OnHitByBaton(Baton baton) {
-        return;
+        Health -= baton.HitDamage;
+        PlayerHealthChanged?.Invoke(this);
+    }
+    public void Heal(float healAmount) {
+        Health += healAmount;
     }
 }
 public interface IDamagable {

@@ -1,6 +1,6 @@
-using Unity.VisualScripting;
 using UnityEngine;
 
+[RequireComponent(typeof(AudioSource))]
 public class BatonEnemy : Enemy {
     private const float MINATTACKDISTANCE = 1.5f;
     private const float TURNSPEED = 100f;
@@ -8,8 +8,19 @@ public class BatonEnemy : Enemy {
     [SerializeField]
     private Baton _baton;
 
+    private AudioSource _source;
+    private AudioClip _hitSound;
     private float _attackTimer;
     private bool _readyToAttack => _attackTimer <= 0f;
+
+    protected override void Awake() {
+        base.Awake();
+        _source = GetComponent<AudioSource>();
+    }
+    protected override void Start() {
+        base.Start();
+        _hitSound = ReferenceManager.Instance.BatonHit;
+    }
 
     protected override void Update() {
         base.Update();
@@ -31,6 +42,7 @@ public class BatonEnemy : Enemy {
         }
         void Attack() {
             if (Player.TryGetComponent<IDamagable>(out var damagable)) {
+                _source.PlayOneShot(_hitSound);
                 damagable.OnHitByBaton(_baton);
             }
         }

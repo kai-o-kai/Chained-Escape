@@ -13,4 +13,7 @@ public class ReferenceManager : ScriptableObject {
     [field: SerializeField] public AudioClip PistolShot { get; private set; }
     [field: SerializeField] public AudioClip PistolReload { get; private set; }
     [field: SerializeField] public AudioClip PistolDryfire { get; private set; }
+    [field: SerializeField] public AudioClip ChainRattle { get; private set; }
+    [field: SerializeField] public AudioClip BatonHit { get; private set; }
+    [field: SerializeField] public AudioClip MedkitPickup { get; private set; }
 }

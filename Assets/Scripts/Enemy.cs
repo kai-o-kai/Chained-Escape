@@ -7,7 +7,7 @@ public abstract class Enemy : MonoBehaviour {
     protected float Speed { get => _path.maxSpeed; set => _path.maxSpeed = value; }
     protected Vector2 Destination { get => _path.destination; set => _path.destination = value; }
     protected Vector2 RememberedPlayerPosition { get; private set; }
-    protected bool DestinationReached => _path.reachedDestination;
+    protected bool DestinationReached => _path.remainingDistance < 0.1f;
     protected bool EnemyIsEnabled = true;
 
     [SerializeField]
@@ -46,6 +46,9 @@ public abstract class Enemy : MonoBehaviour {
     protected bool TurnedToPlayer() {
         float targetAngle = GetAngleToPlayer();
         float difference = Mathf.Abs(targetAngle - transform.eulerAngles.z);
+        if (difference > 360f) {
+            difference = difference % 360f;
+        }
         return difference < 5f;
     }
     protected bool CanSeePlayer() {
