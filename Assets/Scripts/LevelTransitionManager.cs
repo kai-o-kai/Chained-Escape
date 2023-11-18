@@ -19,6 +19,7 @@ public class LevelTransitionManager : MonoBehaviour {
 
     public bool NextSceneExists => SceneManager.GetSceneByBuildIndex(NextSceneIndex) != null;
     public int NextSceneIndex => SceneManager.GetActiveScene().buildIndex + 1;
+    public int CurrentSceneIndex => SceneManager.GetActiveScene().buildIndex;
     
     [SerializeField]
     private float _fadeTimeSeconds;

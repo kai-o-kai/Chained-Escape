@@ -21,6 +21,7 @@ public abstract class Enemy : MonoBehaviour {
     protected virtual void Start() {
         Player = GameObject.FindGameObjectWithTag("Player").transform;
         PlayerHealth.PlayerDie += OnPlayerDie;
+        RememberedPlayerPosition = transform.position;
     }
     protected virtual void Update() {
         SetRememberedPlayerPos();
@@ -31,8 +32,7 @@ public abstract class Enemy : MonoBehaviour {
                 return; 
             }
 
-            if (CanSeePlayer())
-            {
+            if (CanSeePlayer()) {
                 RememberedPlayerPosition = Player.position;
             }
         }

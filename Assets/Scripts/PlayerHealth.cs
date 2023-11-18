@@ -9,6 +9,15 @@ public class PlayerHealth : MonoBehaviour, IDamagable {
 
     private GameObject _hitByBulletFx;
 
+    private void Start() {
+        PlayerDie += () => {
+            Invoke(nameof(ResetLevel), 1f);
+        };
+    }
+    private void ResetLevel() {
+        LevelTransitionManager.Instance.TransitionToScene(LevelTransitionManager.Instance.CurrentSceneIndex, false);
+    }
+
     public void OnHitByBullet(Bullet bullet) {
         Health -= bullet.Damage;
         PlayerHealthChanged?.Invoke(this);

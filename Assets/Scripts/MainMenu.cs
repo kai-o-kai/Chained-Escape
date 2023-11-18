@@ -8,6 +8,9 @@ public class MainMenu : MonoBehaviour {
     private void Awake() {
         _playButton.onClick.AddListener(OnPlayButtonPressed);   
         _quitButton.onClick.AddListener(OnQuitButtonPressed);
+        #if UINTY_WEBGL
+        _quitButton.gameObject.SetActive(false);
+        #endif
     }
     private void OnDestroy() {
         _playButton.onClick.RemoveListener(OnPlayButtonPressed);

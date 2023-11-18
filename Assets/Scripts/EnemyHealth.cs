@@ -4,6 +4,7 @@ using UnityEngine;
 public class EnemyHealth : MonoBehaviour, IDamagable {
     public event Action OnDie;
 
+    [SerializeField]
     private float _health = 100f;
     private GameObject _hitByBulletFx;
 
