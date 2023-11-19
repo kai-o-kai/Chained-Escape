@@ -50,7 +50,7 @@ public class LevelTransitionManager : MonoBehaviour {
     private IEnumerator C_SceneTransitionWithFade(int index) {
         _animator.Play(EXITSCENEANIM);
         yield return new WaitForSeconds(_fadeTimeSeconds);
-        SceneManager.LoadScene(NextSceneIndex);
+        SceneManager.LoadScene(index);
         yield return new WaitForSeconds(0.5f);
         _animator.Play(ENTERSCENEANIM);
     }

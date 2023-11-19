@@ -7,41 +7,21 @@ public class CameraManager : MonoBehaviour {
 
     private const string SHAKEANIMATIONNAME = "shake";
 
-    private const float WAYPOINTREACHEDDISTANCE = 0.05f;
-
-    [SerializeField]
-    private CameraWaypoint[] _waypoints;
-    [SerializeField]
-    [Range(0f, 100f)]
-    private float _speed;
+    
     [SerializeField]
     private bool _cameraMovementEnabled;
+    [SerializeField]
+    private Transform _target;
 
     private Animator _animator;
-    private int _waypointIndex;
-    private CameraWaypoint _currentWaypoint => _waypoints[_waypointIndex];
 
     private void Awake() {
         _animator = GetComponent<Animator>();
         Instance = this;
     }
     private void Update() {
-        MoveCameraAlongWaypoints();
-
-        void MoveCameraAlongWaypoints() {
-            if (!_cameraMovementEnabled || _waypoints.Length == 0) { return; }
-
-            transform.position = Vector2.MoveTowards(transform.position, _currentWaypoint.transform.position, Time.deltaTime * _speed);
-            if (Vector2.Distance(transform.position, _currentWaypoint.transform.position) < WAYPOINTREACHEDDISTANCE) {
-                _currentWaypoint.ReachCameraWaypoint(this);
-                bool reachedEndOfWaypoints = (_waypointIndex + 1) == _waypoints.Length;
-                if (reachedEndOfWaypoints)
-                {
-                    _cameraMovementEnabled = false;
-                    return;
-                }
-                _waypointIndex++;
-            }
+        if (_cameraMovementEnabled) {
+            transform.position = new Vector3(_target.position.x, _target.position.y, transform.position.z);
         }
     }
     private void OnDestroy() {
